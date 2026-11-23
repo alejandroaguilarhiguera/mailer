@@ -1,0 +1,50 @@
+meta {
+  name: health-check
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{server}}health
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+  forwardAuthorizationHeader: false
+}
+
+example {
+  name: 200 success
+  
+  request: {
+    url: {{server}}health
+    method: GET
+    mode: none
+  }
+  
+  response: {
+    headers: {
+      date: Sat, 21 Nov 2026 21:21:30 GMT
+      server: uvicorn
+      content-length: 15
+      content-type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "status": "ok"
+        }
+      '''
+    }
+  }
+}

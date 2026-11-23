@@ -1,0 +1,89 @@
+meta {
+  name: test
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{server}}test
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "test@test.com"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+  forwardAuthorizationHeader: false
+}
+
+example {
+  name: 502 bad gateway upgrade your plan
+  
+  request: {
+    url: {{server}}test
+    method: POST
+    mode: none
+  }
+  
+  response: {
+    headers: {
+      date: Sat, 21 Nov 2026 21:56:47 GMT
+      server: uvicorn
+      content-length: 156
+      content-type: application/json
+    }
+  
+    status: {
+      code: 502
+      text: Bad Gateway
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "detail": "Error al enviar correo por SMTP: (550, b'5.7.0 Too many emails per second. Please upgrade your plan https://mailtrap.io/billing/plans/testing')"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: 200 success
+  
+  request: {
+    url: {{server}}test
+    method: POST
+    mode: none
+  }
+  
+  response: {
+    headers: {
+      date: Sat, 21 Nov 2026 21:59:41 GMT
+      server: uvicorn
+      content-length: 26
+      content-type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "mail enviado"
+        }
+      '''
+    }
+  }
+}

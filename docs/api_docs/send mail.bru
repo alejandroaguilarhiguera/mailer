@@ -1,0 +1,67 @@
+meta {
+  name: send mail
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{server}}send_mail
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "to": "test@gmail.com",
+    "subject": "subject test",
+    "text": "text test",
+    "html": "<html><body>body test</body></html>"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+  forwardAuthorizationHeader: false
+}
+
+example {
+  name: 200 success
+  
+  request: {
+    url: {{server}}send_mail
+    method: POST
+    mode: json
+    body:json: {
+      {
+        "to": "test@gmail.com",
+        "subject": "subject test",
+        "text": "text test",
+        "html": "<html><body>body test</body></html>"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      date: Mon, 23 Nov 2026 01:12:09 GMT
+      server: uvicorn
+      content-length: 42
+      content-type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "message": "Correo enviado exitosamente."
+        }
+      '''
+    }
+  }
+}
